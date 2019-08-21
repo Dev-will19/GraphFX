@@ -1,0 +1,50 @@
+* {
+    /* Variables globales del tema */
+    -color-principal: #2f5c78;
+    -color-hint: #3b8ba9;
+    -fondo: #2b2b2b;
+    -gris: rgba(0, 0, 0, 0.65);
+    -negro: #000000;
+    -blanco: #ffffff;
+    -transparente: rgba(255, 255, 255, 0);
+}
+
+.parent {
+    -fx-background-color: -fondo;
+}
+
+.dibujable {
+    -fx-background-color: -gris;
+}
+
+.label {
+    -fx-text-fill: -blanco;
+}
+
+.jfx-button {
+    -fx-background-radius: 15px;
+    -fx-background-color: -color-principal;
+    -fx-text-fill: -blanco;
+}
+
+.jfx-button:hover {
+    -fx-background-color: -color-hint;
+    -fx-border-color: -color-hint;
+    -fx-border-width: 2px;
+    -fx-border-radius: 15px;
+}
+
+.jfx-toggle-button {
+    -fx-text-fill: -blanco;
+    -jfx-toggle-color: -color-principal;
+    -jfx-toggle-line-color: -color-principal;
+    -jfx-untoggle-color: -color-principal;
+    -jfx-rippler-fill: -blanco;
+}
+
+.jfx-btn-fantasma {
+    -fx-background-color: -fondo;
+    -fx-border-color: -color-principal;
+    -fx-border-width: 2px;
+    -fx-border-radius: 15px;
+}
