@@ -5,9 +5,11 @@ import Utils.Pantalla;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXSlider;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,11 +34,11 @@ public class MesaTrabajoController implements Initializable {
     }
 
     private void dibujarVertices(MouseEvent event) {
-        if( event.getClickCount() == 2) {
-            VerticeGrafo verticeGrafo = new VerticeGrafo(contador,event.getX(),event.getY(),Integer.toString(contador++));
-            verticeGrafo.establecerEtiqueta(panelDibujable);
+        if (event.getClickCount() == 2) {
+            /* Crea un grupo con el vertice y texto */
+            VerticeGrafo verticeGrafo = new VerticeGrafo(contador++, event.getX(), event.getY());
+            panelDibujable.getChildren().add(verticeGrafo);         //Añade el vertice al panel visible
             verticeGrafoList.add(verticeGrafo);
-            System.out.println("existen x= " + verticeGrafoList.size() + " grafos añadidos");
         }
     }
 
