@@ -19,41 +19,26 @@ public class VerticeGrafo extends Group {
         this.identificador = identificador;
         this.posX = posX;
         this.posY = posY;
-
         crearComponentes();
-        establecerComportamientoCirculo();
     }
 
     private void crearComponentes() {
         //Componentes del grupo
-        circulo = new Circle(posX, posY, 20);
+        circulo = new Circle(20);
         circulo.setFill(Color.rgb(59, 139, 169));
         circulo.setCursor(HAND);
-        texto = new Text(posX - 25, posY - 20, Integer.toString(identificador));
+        texto = new Text(Integer.toString(identificador));
         texto.setFill(Color.WHITE);
+        setPosicionCirculo();
+        setPosicionTexto();
         getChildren().addAll(circulo, texto);
-    }
-
-    private void establecerComportamientoCirculo() {
-        this.setOnMouseDragged(event -> {
-            posX = event.getX();
-            posY = event.getY();
-            circulo.setCenterX(posX);
-            circulo.setCenterY(posY);
-            texto.setX(posX - 25);
-            texto.setY(posY - 20);
-        });
     }
 
     public int getIdentificador() {
         return identificador;
     }
 
-    public void setIdentificador(int identificador) {
-        this.identificador = identificador;
-    }
-
-    public double getPosX() {
+    private double getPosX() {
         return posX;
     }
 
@@ -61,7 +46,7 @@ public class VerticeGrafo extends Group {
         this.posX = posX;
     }
 
-    public double getPosY() {
+    private double getPosY() {
         return posY;
     }
 
@@ -73,15 +58,22 @@ public class VerticeGrafo extends Group {
         return circulo;
     }
 
-    public void setCirculo(Circle circulo) {
-        this.circulo = circulo;
+    public void pintarColorDefecto() {
+        circulo.setFill(Color.rgb(59, 139, 169));
     }
 
-    public Text getTexto() {
-        return texto;
+    public void pintarColorSeleccionado() {
+        circulo.setFill(Color.rgb(54, 139, 30));
     }
 
-    public void setTexto(Text texto) {
-        this.texto = texto;
+    public void setPosicionCirculo() {
+        circulo.setCenterX(getPosX());
+        circulo.setCenterY(getPosY());
     }
+
+    public void setPosicionTexto() {
+        texto.setX(getPosX() - 25);
+        texto.setY(getPosY() - 20);
+    }
+
 }

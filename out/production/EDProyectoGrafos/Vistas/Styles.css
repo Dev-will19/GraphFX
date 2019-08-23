@@ -21,17 +21,14 @@
     -fx-text-fill: -blanco;
 }
 
-.jfx-button {
-    -fx-background-radius: 15px;
-    -fx-background-color: -color-principal;
+.jfx-button-normal {
     -fx-text-fill: -blanco;
+    -fx-background-color: -color-principal;
+    -fx-background-radius: 15px;
 }
 
-.jfx-button:hover {
+.jfx-button-normal:hover {
     -fx-background-color: -color-hint;
-    -fx-border-color: -color-hint;
-    -fx-border-width: 2px;
-    -fx-border-radius: 15px;
 }
 
 .jfx-toggle-button {
@@ -47,4 +44,25 @@
     -fx-border-color: -color-principal;
     -fx-border-width: 2px;
     -fx-border-radius: 15px;
+}
+
+.jfx-button-circular {
+    -fx-background-color: -color-principal;
+    -fx-background-radius: 100%;
+}
+
+.jfx-button-circular:hover {
+    -fx-background-color: -color-hint;
+    -fx-border-width: 100%;
+    -fx-border-radius: 100%;
+}
+
+.jfx-snackbar-content {
+    -fx-background-color: #3facff;
+    -fx-padding: 5;
+    -fx-spacing: 5;
+}
+
+.jfx-snackbar-toast {
+    -fx-text-fill: WHITE;
 }
