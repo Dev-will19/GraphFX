@@ -5,6 +5,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static javafx.scene.Cursor.HAND;
 
 public class VerticeGrafo extends Group {
@@ -12,11 +15,13 @@ public class VerticeGrafo extends Group {
     private int identificador;
     private double posX;
     private double posY;
+    private List<AristaGrafo> aristas;
     private Circle circulo;
     private Text texto;
 
     public VerticeGrafo(int identificador, double posX, double posY) {
         this.identificador = identificador;
+        this.aristas = new ArrayList<>();
         this.posX = posX;
         this.posY = posY;
         crearComponentes();
@@ -29,8 +34,7 @@ public class VerticeGrafo extends Group {
         circulo.setCursor(HAND);
         texto = new Text(Integer.toString(identificador));
         texto.setFill(Color.WHITE);
-        setPosicionCirculo();
-        setPosicionTexto();
+        posicionarElementos();
         getChildren().addAll(circulo, texto);
     }
 
@@ -38,7 +42,7 @@ public class VerticeGrafo extends Group {
         return identificador;
     }
 
-    private double getPosX() {
+    double getPosX() {
         return posX;
     }
 
@@ -46,7 +50,7 @@ public class VerticeGrafo extends Group {
         this.posX = posX;
     }
 
-    private double getPosY() {
+    double getPosY() {
         return posY;
     }
 
@@ -58,6 +62,10 @@ public class VerticeGrafo extends Group {
         return circulo;
     }
 
+    public List<AristaGrafo> getAristas() {
+        return aristas;
+    }
+
     public void pintarColorDefecto() {
         circulo.setFill(Color.rgb(59, 139, 169));
     }
@@ -66,14 +74,18 @@ public class VerticeGrafo extends Group {
         circulo.setFill(Color.rgb(54, 139, 30));
     }
 
-    public void setPosicionCirculo() {
+    public void posicionarElementos() {
+        setPosicionCirculo();
+        setPosicionTexto();
+    }
+
+    private void setPosicionCirculo() {
         circulo.setCenterX(getPosX());
         circulo.setCenterY(getPosY());
     }
 
-    public void setPosicionTexto() {
+    private void setPosicionTexto() {
         texto.setX(getPosX() - 25);
         texto.setY(getPosY() - 20);
     }
-
 }

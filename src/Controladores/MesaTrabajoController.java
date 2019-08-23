@@ -1,5 +1,6 @@
 package Controladores;
 
+import Entidades.AristaGrafo;
 import Entidades.VerticeGrafo;
 import Utils.Pantalla;
 import com.jfoenix.controls.*;
@@ -9,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -17,26 +19,29 @@ import java.util.ResourceBundle;
 
 public class MesaTrabajoController implements Initializable {
 
-    private static int contador;
+    private static int contadorVertices;
+    private static int contadorAristas;
 
     public BorderPane root;
-    public BorderPane panelDibujable;
+    public BorderPane panelVertices;
+    public BorderPane panelAristas;
     public JFXButton btnRegresar;
     public JFXButton btnArista;
     public JFXButton btnVertice;
     public Label lb;
     public JFXNodesList menuNodos;
+    public StackPane panelPila;
 
     private JFXSnackbar notificacionInferior;
 
     private boolean modoVertice;
-    private int verticeInicio;
+    private int IdVerticeInicio;
     private List<VerticeGrafo> verticeGrafoList;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        contador = 0;
-        verticeInicio = -1;
+        contadorVertices = 0;
+        IdVerticeInicio = -1;
         modoVertice = true;
         verticeGrafoList = new ArrayList<>();
         notificacionInferior = new JFXSnackbar(root);
@@ -45,7 +50,7 @@ public class MesaTrabajoController implements Initializable {
 
     private void establecerComportamientos() {
         btnRegresar.setOnAction(event -> volverPrincipal());
-        panelDibujable.setOnMouseClicked(this::dibujarVertices);
+        panelPila.setOnMouseClicked(this::dibujarVertices);
         notificacionInferior.setPrefWidth(300);
         btnArista.setOnAction(event -> {
             modoVertice = false;
@@ -61,21 +66,7 @@ public class MesaTrabajoController implements Initializable {
     }
 
     private void deseleccionarVertice(int idVertice) {
-        for (VerticeGrafo g : verticeGrafoList) {
-            if (g.getIdentificador() == idVertice) {
-                g.pintarColorDefecto();
-            }
-        }
-    }
-
-    private void dibujarVertices(MouseEvent event) {
-        if (event.getClickCount() == 2 & modoVertice) {
-            /* Crea un grupo con el vertice y texto */
-            VerticeGrafo verticeGrafo = new VerticeGrafo(contador++, event.getX(), event.getY());
-            establecerComportamientoVertices(verticeGrafo);             // Establece el mismo comportamiento a todos
-            panelDibujable.getChildren().add(verticeGrafo);             // Añade el vertice al panel visible
-            verticeGrafoList.add(verticeGrafo);
-        }
+        buscarVertice(idVertice).pintarColorDefecto();
     }
 
     private void volverPrincipal() {
@@ -96,12 +87,13 @@ public class MesaTrabajoController implements Initializable {
         /* Cuando el circulo es presionado*/
         verticeGrafo.setOnMouseClicked(event -> {
             if (!modoVertice) {                                         // Es decir, está en modo arista.
-                if (verticeInicio == -1) {                              //No hay vertice inicial seleccionado
-                    verticeInicio = verticeGrafo.getIdentificador();
+                if (IdVerticeInicio == -1) {                              //No hay vertice inicial seleccionado
+                    IdVerticeInicio = verticeGrafo.getIdentificador();
                     verticeGrafo.pintarColorSeleccionado();
                 } else {
-                    deseleccionarVertice(verticeInicio);
-                    verticeInicio = -1;
+                    dibujarArista(verticeGrafo.getIdentificador());
+                    deseleccionarVertice(IdVerticeInicio);
+                    IdVerticeInicio = -1;
                     verticeGrafo.pintarColorDefecto();
                 }
             }
@@ -109,11 +101,15 @@ public class MesaTrabajoController implements Initializable {
 
         /* Permitir el movimiento del circulo y el texto */
         verticeGrafo.setOnMouseDragged(event -> {
-            if (modoVertice) {                                           // Permite mover solo modo vertice
+            if (modoVertice) {
                 verticeGrafo.setPosX(event.getX());
                 verticeGrafo.setPosY(event.getY());
-                verticeGrafo.setPosicionCirculo();
-                verticeGrafo.setPosicionTexto();
+                verticeGrafo.posicionarElementos();
+                if (verticeGrafo.getAristas().size() != 0) {                    // Si posee aristas
+                    for (AristaGrafo aristaGrafo : verticeGrafo.getAristas()) {
+                        aristaGrafo.posicionarElementos();
+                    }
+                }
             }
         });
 
@@ -125,5 +121,33 @@ public class MesaTrabajoController implements Initializable {
             if (modoVertice)                                             // Permite mostrar el menu, solo en modo vertice
                 menu.show(verticeGrafo.getCirculo(), event.getScreenX(), event.getScreenY());
         });
+    }
+
+    private void dibujarVertices(MouseEvent event) {
+        if (event.getClickCount() == 2 & modoVertice) {
+            /* Crea un grupo con el vertice y texto */
+            VerticeGrafo verticeGrafo = new VerticeGrafo(contadorVertices++, event.getX(), event.getY());
+            establecerComportamientoVertices(verticeGrafo);             // Establece el mismo comportamiento a todos
+            panelVertices.getChildren().add(verticeGrafo);             // Añade el vertice al panel visible
+            verticeGrafoList.add(verticeGrafo);
+        }
+    }
+
+    private void dibujarArista(int IdVerticeFinal) {
+        VerticeGrafo verticeInicio = buscarVertice(IdVerticeInicio);
+        VerticeGrafo verticeFinal = buscarVertice(IdVerticeFinal);
+        AristaGrafo aristaGrafo = new AristaGrafo(contadorAristas++, verticeInicio, verticeFinal);
+        verticeInicio.getAristas().add(aristaGrafo);
+        verticeFinal.getAristas().add(aristaGrafo);
+        panelAristas.getChildren().add(aristaGrafo);
+    }
+
+    private VerticeGrafo buscarVertice(int idVertice) {
+        for (VerticeGrafo verticeGrafo : verticeGrafoList) {
+            if (verticeGrafo.getIdentificador() == idVertice) {
+                return verticeGrafo;
+            }
+        }
+        return null;
     }
 }

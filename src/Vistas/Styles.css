@@ -49,6 +49,7 @@
 .jfx-button-circular {
     -fx-background-color: -color-principal;
     -fx-background-radius: 100%;
+    -jfx-button-type: RAISED;
 }
 
 .jfx-button-circular:hover {

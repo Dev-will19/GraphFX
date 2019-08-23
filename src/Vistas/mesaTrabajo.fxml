@@ -8,77 +8,76 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="root" styleClass="parent" stylesheets="@Styles.css" xmlns="http://javafx.com/javafx/11.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.MesaTrabajoController">
+<BorderPane fx:id="root" prefWidth="600.0" styleClass="parent" stylesheets="@Styles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.MesaTrabajoController">
     <top>
         <HBox alignment="CENTER" prefHeight="66.0" prefWidth="600.0" spacing="50.0" BorderPane.alignment="CENTER">
             <Label fx:id="lb" text="Label">
                 <font>
-                    <Font size="21.0"/>
+                    <Font size="21.0" />
                 </font>
             </Label>
         </HBox>
     </top>
     <center>
-        <BorderPane fx:id="panelDibujable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER"/>
+        <StackPane fx:id="panelPila" BorderPane.alignment="CENTER">
+            <BorderPane fx:id="panelAristas" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" />
+            <BorderPane fx:id="panelVertices" prefHeight="200.0" prefWidth="200.0" />
+        </StackPane>
     </center>
     <bottom>
         <BorderPane prefHeight="44.0" prefWidth="560.0">
             <right>
                 <JFXNodesList fx:id="menuNodos" alignment="CENTER" rotate="180.0" spacing="10.0" BorderPane.alignment="CENTER">
                     <cursor>
-                        <Cursor fx:constant="HAND"/>
+                        <Cursor fx:constant="HAND" />
                     </cursor>
-                    <JFXButton contentDisplay="GRAPHIC_ONLY" focusTraversable="false" minHeight="58.0" minWidth="58.0"
-                               styleClass="jfx-button-circular" text="Button">
+                    <JFXButton contentDisplay="GRAPHIC_ONLY" focusTraversable="false" minHeight="58.0" minWidth="58.0" styleClass="jfx-button-circular" text="Button">
                         <graphic>
-                            <FontAwesomeIcon fill="WHITE" iconName="COG" size="32" text=""/>
+                            <FontAwesomeIcon fill="WHITE" iconName="COG" size="32" text="" />
                         </graphic>
                     </JFXButton>
                     <HBox alignment="CENTER" spacing="10.0">
                         <padding>
-                            <Insets right="100.0"/>
+                            <Insets right="100.0" />
                         </padding>
                         <Label alignment="CENTER" contentDisplay="RIGHT" minWidth="90.0" text="Modo arista">
                             <font>
-                                <Font size="14.0"/>
+                                <Font size="14.0" />
                             </font>
                         </Label>
-                        <JFXButton fx:id="btnArista" contentDisplay="GRAPHIC_ONLY" minHeight="48.0" minWidth="48.0"
-                                   styleClass="jfx-button-circular">
+                        <JFXButton fx:id="btnArista" contentDisplay="GRAPHIC_ONLY" minHeight="48.0" minWidth="48.0" styleClass="jfx-button-circular">
                             <graphic>
-                                <FontAwesomeIcon fill="WHITE" iconName="LONG_ARROW_RIGHT" size="20"/>
+                                <FontAwesomeIcon fill="WHITE" iconName="LONG_ARROW_RIGHT" size="20" />
                             </graphic>
                         </JFXButton>
                     </HBox>
                     <HBox alignment="CENTER" spacing="10.0">
                         <padding>
-                            <Insets right="100.0"/>
+                            <Insets right="100.0" />
                         </padding>
                         <Label alignment="CENTER" contentDisplay="RIGHT" minWidth="90.0" text="Modo vértice">
                             <font>
-                                <Font size="14.0"/>
+                                <Font size="14.0" />
                             </font>
                         </Label>
-                        <JFXButton fx:id="btnVertice" contentDisplay="GRAPHIC_ONLY" minHeight="48.0" minWidth="48.0"
-                                   styleClass="jfx-button-circular">
+                        <JFXButton fx:id="btnVertice" contentDisplay="GRAPHIC_ONLY" minHeight="48.0" minWidth="48.0" styleClass="jfx-button-circular">
                             <graphic>
-                                <FontAwesomeIcon fill="WHITE" iconName="CIRCLE" size="20"/>
+                                <FontAwesomeIcon fill="WHITE" iconName="CIRCLE" size="20" />
                             </graphic>
                         </JFXButton>
                     </HBox>
                 </JFXNodesList>
             </right>
             <BorderPane.margin>
-                <Insets bottom="20.0" left="20.0" right="20.0"/>
+                <Insets bottom="20.0" left="20.0" right="20.0" />
             </BorderPane.margin>
             <left>
-                <JFXButton fx:id="btnRegresar" focusTraversable="false" styleClass="jfx-button-normal" text="Regresar"
-                           BorderPane.alignment="CENTER">
+                <JFXButton fx:id="btnRegresar" focusTraversable="false" styleClass="jfx-button-normal" text="Regresar" BorderPane.alignment="CENTER">
                     <font>
-                        <Font size="16.0"/>
+                        <Font size="16.0" />
                     </font>
                 </JFXButton>
             </left>
