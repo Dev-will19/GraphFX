@@ -3,7 +3,7 @@
     -color-principal: #478fb6;
     -color-hint: #3b8ba9;
     -fondo: #2b2b2b;
-    -gris: rgba(0, 0, 0, 0.65);
+    -gris: rgba(62, 62, 62, 0.65);
     -negro: #000000;
     -blanco: #ffffff;
     -transparente: rgba(255, 255, 255, 0);
@@ -13,8 +13,8 @@
     -fx-background-color: -fondo;
 }
 
-.dibujable {
-    -fx-background-color: -gris;
+.fondo-menu {
+    -fx-background-color: -blanco;
 }
 
 .label {
@@ -76,5 +76,9 @@
 
 .jfx-area-texto {
     -fx-background-color: -blanco;
+    -fx-background-radius: 0px;
+}
+
+.jfx-menu-no-bordes{
     -fx-background-radius: 0px;
 }

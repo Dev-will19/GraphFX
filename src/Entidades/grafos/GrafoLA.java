@@ -4,220 +4,222 @@ import Entidades.listaCalificadaOrdenada.Lista;
 import Entidades.listaCalificadaOrdenada.NodoLista;
 
 public class GrafoLA implements Grafo {
-	int maxNodos; // Tama�o m�ximo de la tabla.
-	int numVertices; // N�mero de v�rtices.
-	Lista listaAdy[]; // Matriz de adyacencias del grafo.
-	int[][] pesos;
-	boolean dirigido; // Indica si es dirigido o no.
+    int maxNodos; // Tama�o m�ximo de la tabla.
+    int numVertices; // N�mero de v�rtices.
+    Lista listaAdy[]; // Matriz de adyacencias del grafo.
+    int[][] pesos;
+    boolean dirigido; // Indica si es dirigido o no.
 
-	// ----------------------------------------
-	// CONSTRUCTORES Y M�TODOS DE ACCESO
-	// ----------------------------------------
+    // ----------------------------------------
+    // CONSTRUCTORES Y M�TODOS DE ACCESO
+    // ----------------------------------------
 
-	public GrafoLA(boolean d) { // Grafo vac�o
-		maxNodos = numVertices = 0;
-		dirigido = d;
-	}
+    public GrafoLA(boolean d) { // Grafo vac�o
+        maxNodos = numVertices = 0;
+        dirigido = d;
+    }
 
-	public GrafoLA(int n, boolean d) { // construye una array de listas de tama�o n con 0 v�rtices.
-		dirigido = d;
-		maxNodos = n;
-		numVertices = 0;
-		listaAdy = new Lista[n];
-		pesos = new int[n][n];
-		for (int i = 0; i < numVertices; i++) {
-			for (int j = 0; j < numVertices; j++) {
-				pesos[i][j] = INFINITO;
-			}
-		}
-	}
-	
-	public int[][] obtenerPesos(){
-		return pesos;
-	}
+    public GrafoLA(int n, boolean d) { // construye una array de listas de tama�o n con 0 v�rtices.
+        dirigido = d;
+        maxNodos = n;
+        numVertices = 0;
+        listaAdy = new Lista[n];
+        pesos = new int[n][n];
+        for (int i = 0; i < numVertices; i++) {
+            for (int j = 0; j < numVertices; j++) {
+                pesos[i][j] = INFINITO;
+            }
+        }
+    }
 
-	public int obtenerNumVertices() {
-		return this.numVertices;
-	}
+    public int[][] obtenerPesos() {
+        return pesos;
+    }
 
-	// --------------------
-	// ARISTAS
-	// --------------------
+    public int obtenerNumVertices() {
+        return this.numVertices;
+    }
 
-	public void insertaArista(int i, int j) {
+    // --------------------
+    // ARISTAS
+    // --------------------
 
-		if (i >= numVertices)
-			System.out.println("Error, no existe el v�rtice en el grafo");
-		else {
-			listaAdy[i].insertar(j);
-			if (!dirigido)
-				listaAdy[j].insertar(i);
-		}
-	}
+    public void insertaArista(int i, int j) {
 
-	public void insertaPeso(int i, int j, int peso) {
-		if (i >= numVertices)
-			System.out.println("Error, no existe el v�rtice en el grafo");
-		else {
-			if (existeArista(i, j)) {
-				pesos[i][j] = peso;
-				if (!dirigido)
-					pesos[j][i] = peso;
-			}
-		}
-	}
+        if (i >= numVertices)
+            System.out.println("Error, no existe el v�rtice en el grafo");
+        else {
+            listaAdy[i].insertar(j);
+            if (!dirigido)
+                listaAdy[j].insertar(i);
+        }
+    }
 
-	public void insertaArista(int i, int j, int peso) {
-		insertaArista(i, j);
-		insertaPeso(i, j, peso);
-	}
+    public void insertaPeso(int i, int j, int peso) {
+        if (i >= numVertices)
+            System.out.println("Error, no existe el v�rtice en el grafo");
+        else {
+            if (existeArista(i, j)) {
+                pesos[i][j] = peso;
+                if (!dirigido)
+                    pesos[j][i] = peso;
+            }
+        }
+    }
 
-	public void eliminaArista(int i, int j) {
-		if (j >= numVertices)
-			System.out.println("Error, no existe el v�rtice en el grafo");
-		else {
-			listaAdy[i].eliminar(j);
-			pesos[i][j] = INFINITO;
-			if (!dirigido) {
-				listaAdy[j].eliminar(i);
-				pesos[j][i] = INFINITO;
-			}
-		}
-	}
+    public void insertaArista(int i, int j, int peso) {
+        insertaArista(i, j);
+        insertaPeso(i, j, peso);
+    }
 
-	public boolean existeArista(int i, int j) {
-		if ((i >= numVertices) || (j >= numVertices)) {
-			System.out.println("Error, los vertices no se encuentran en el grafo.");
-			return false;
-		} else
-			return (listaAdy[i].busqueda(j));
-	}
+    public void eliminaArista(int i, int j) {
+        if (j >= numVertices)
+            System.out.println("Error, no existe el v�rtice en el grafo");
+        else {
+            listaAdy[i].eliminar(j);
+            pesos[i][j] = INFINITO;
+            if (!dirigido) {
+                listaAdy[j].eliminar(i);
+                pesos[j][i] = INFINITO;
+            }
+        }
+    }
 
-	// --------------------
-	// INSERTAR VERTICES
-	// --------------------
+    public boolean existeArista(int i, int j) {
+        if ((i >= numVertices) || (j >= numVertices)) {
+            System.out.println("Error, los vertices no se encuentran en el grafo.");
+            return false;
+        } else
+            return (listaAdy[i].busqueda(j));
+    }
 
-	public void insertaVertice(int n) {// n: numero de vertices que quiero a�adir al grafo
-		if (n > maxNodos - numVertices)
-			System.out.println("Error, se supera el n�mero de nodos m�ximo del grafo");
-		else {
-			for (int i = 0; i < numVertices + n; i++) {
-				listaAdy[i] = new Lista("lista " + i);
-				for (int j = numVertices; j < numVertices + n; j++) {
-					pesos[i][j] = pesos[j][i] = INFINITO;
-				}
-			}
-		}
-		numVertices += n;
-	}
+    // --------------------
+    // INSERTAR VERTICES
+    // --------------------
 
-	// ----------------------------------------
-	// GRADO IN, OUT E INCIDENCIA
-	// ----------------------------------------
+    public void insertaVertice(int n) {// n: numero de vertices que quiero a�adir al grafo
+        if (n > maxNodos - numVertices)
+            System.out.println("Error, se supera el n�mero de nodos m�ximo del grafo");
+        else {
+            for (int i = 0; i < numVertices + n; i++) {
+                listaAdy[i] = new Lista("lista " + i);
+                for (int j = numVertices; j < numVertices + n; j++) {
+                    pesos[i][j] = pesos[j][i] = INFINITO;
+                }
+            }
+        }
+        numVertices += n;
+    }
 
-	public int gradoIn(int v) { // contar las veces que aparece i en las listas
-		int gIn = 0;
-		for (int i = 0; i < numVertices; i++)
-			// if (i!=v){
-			if (listaAdy[i].busqueda(v))
-				gIn++;
-		// }
-		return gIn;
-	}
+    // ----------------------------------------
+    // GRADO IN, OUT E INCIDENCIA
+    // ----------------------------------------
 
-	public int gradoOut(int i) { // contar los elementos de la lista
-		int gOut = 0;
-		NodoLista aux = listaAdy[i].inicio;
-		while (aux != null) {
-			gOut++;
-			aux = aux.sig;
-		}
-		return gOut;
-	}
+    public int gradoIn(int v) { // contar las veces que aparece i en las listas
+        int gIn = 0;
+        for (int i = 0; i < numVertices; i++)
+            // if (i!=v){
+            if (listaAdy[i].busqueda(v))
+                gIn++;
+        // }
+        return gIn;
+    }
 
-	public int incidencia(int i) {
-		if (!dirigido)
-			return gradoIn(i);
-		else
-			return gradoIn(i) + gradoOut(i);
-	}
+    public int gradoOut(int i) { // contar los elementos de la lista
+        int gOut = 0;
+        NodoLista aux = listaAdy[i].inicio;
+        while (aux != null) {
+            gOut++;
+            aux = aux.sig;
+        }
+        return gOut;
+    }
 
-	// ----------------------------------------
-	// ORDEN Y TAMA�O DEL GRAFO
-	// ----------------------------------------
+    public int incidencia(int i) {
+        if (!dirigido)
+            return gradoIn(i);
+        else
+            return gradoIn(i) + gradoOut(i);
+    }
 
-	public int orden() {
-		return numVertices;
-	}
+    // ----------------------------------------
+    // ORDEN Y TAMA�O DEL GRAFO
+    // ----------------------------------------
 
-	public int tamanno() { // N�mero de arcos, se cuenta el n�mero de nodos de las listas.
-		int tm = 0;
-		for (int i = 0; i < numVertices; i++) {
-			tm += numElementos(listaAdy[i]);
-		}
-		if (!dirigido)
-			tm = tm / 2;
-		return tm;
-	}
+    public int orden() {
+        return numVertices;
+    }
 
-	static int numElementos(Lista lista) {
-		NodoLista aux = lista.inicio;
-		int resul = 0;
-		while (aux != null) {
-			resul += 1;
-			aux = aux.sig;
-		}
-		return resul;
-	}
+    public int tamanno() { // N�mero de arcos, se cuenta el n�mero de nodos de las listas.
+        int tm = 0;
+        for (int i = 0; i < numVertices; i++) {
+            tm += numElementos(listaAdy[i]);
+        }
+        if (!dirigido)
+            tm = tm / 2;
+        return tm;
+    }
 
-	// ----------------------------------------
-	// COMPRUEBA SI ES ""NO"" DIRIGIDO
-	// ----------------------------------------
+    static int numElementos(Lista lista) {
+        NodoLista aux = lista.inicio;
+        int resul = 0;
+        while (aux != null) {
+            resul += 1;
+            aux = aux.sig;
+        }
+        return resul;
+    }
 
-	public boolean esNoDirigido() {
-		boolean dir = true;
+    // ----------------------------------------
+    // COMPRUEBA SI ES ""NO"" DIRIGIDO
+    // ----------------------------------------
 
-		for (int i = 0; i < numVertices; i++)
-			for (int j = 0; j < numVertices; j++) {
-				if (listaAdy[i].busqueda(j) != listaAdy[j].busqueda(i))
-					dir = false;
-			}
-		return dir;
-	}
+    public boolean esNoDirigido() {
+        boolean dir = true;
 
-	// ----------------------------------------
-	// IMPRIME LAS LISTAS DE ADYACENCIAS
-	// ----------------------------------------
+        for (int i = 0; i < numVertices; i++)
+            for (int j = 0; j < numVertices; j++) {
+                if (listaAdy[i].busqueda(j) != listaAdy[j].busqueda(i))
+                    dir = false;
+            }
+        return dir;
+    }
 
-	public void imprimirGrafo() {
-		System.out.println("Tama�o m�ximo del grafo: " + maxNodos + "\n");
-		System.out.println("El grafo contiene " + numVertices + " v�rtices: \n");
-		for (int i = 0; i < numVertices; i++) {
-			System.out.print("v�rtice " + i + ": ");
-			escribir(listaAdy[i]);
-		}
-	}
+    // ----------------------------------------
+    // IMPRIME LAS LISTAS DE ADYACENCIAS
+    // ----------------------------------------
 
-	static void escribir(Lista lista) {
-		NodoLista aux;
-		aux = lista.inicio;
-		while (aux != null) {
-			System.out.print(aux.clave + ", ");
-			aux = aux.sig;
-		}
-		System.out.println("FIN");
-	}
+    public String imprimirGrafo() {
+        String resul = "Tamaño máximo del grafo: " + maxNodos + "\n";
+        resul += "El grafo contiene " + numVertices + " vértices: \n";
+        for (int i = 0; i < numVertices; i++) {
+            resul += "vértice " + i + ": ";
+            resul += escribir(listaAdy[i]);
+        }
+        return resul;
+    }
 
-	public void imprimirPesos() {
-		System.out.println("La matriz contiene " + numVertices + " v�rtices: \n");
-		for (int i = 0; i < numVertices; i++) {
-			for (int j = 0; j < numVertices; j++) {
-				if (pesos[i][j] == INFINITO)
-					System.out.print('\u221e' + "\t");
-				else
-					System.out.print(pesos[i][j] + "\t");
-			}
-			System.out.println();
-		}
-	}
+    static String escribir(Lista lista) {
+        StringBuilder resul = new StringBuilder();
+        NodoLista aux;
+        aux = lista.inicio;
+        while (aux != null) {
+            resul.append(aux.clave).append(", ");
+            aux = aux.sig;
+        }
+        return ((resul.equals("")) ? resul.substring(0, resul.length() - 2) : resul) + " FIN\n";
+    }
+
+    public void imprimirPesos() {
+        System.out.println("La matriz contiene " + numVertices + " v�rtices: \n");
+        for (int i = 0; i < numVertices; i++) {
+            for (int j = 0; j < numVertices; j++) {
+                if (pesos[i][j] == INFINITO)
+                    System.out.print('\u221e' + "\t");
+                else
+                    System.out.print(pesos[i][j] + "\t");
+            }
+            System.out.println();
+        }
+    }
 }

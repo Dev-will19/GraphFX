@@ -65,6 +65,10 @@ public class VerticeGrafo extends Group {
         return circulo;
     }
 
+    public void setTexto(String texto) {
+        this.texto.setText(texto);
+    }
+
     public List<Integer> getVerticesAdyacentes() {
         return verticesAdyacentes;
     }
@@ -80,7 +84,7 @@ public class VerticeGrafo extends Group {
     public void posicionarElementos() {
         setPosicionCirculo();
         setPosicionTexto();
-        if(bucle != null)
+        if (bucle != null)
             setPosicionBucle();
     }
 
@@ -91,16 +95,16 @@ public class VerticeGrafo extends Group {
 
     private void setPosicionTexto() {
         texto.setX(getPosX() - 25);
-        texto.setY(getPosY() - 20);
+        texto.setY(getPosY() - 25);
     }
 
     private void setPosicionBucle() {
-        bucle.setCenterX(getPosX()-20);
-        bucle.setCenterY(getPosY()-20);
+        bucle.setCenterX(getPosX() - 20);
+        bucle.setCenterY(getPosY() + 20);
     }
 
     public void crearBucle() {
-        Arc arc = new Arc(getPosX() - 20, getPosY() - 20, 20, 20, 0, 270);
+        Arc arc = new Arc(getPosX() - 20, getPosY() + 20, 20, 20, 90, 270);
         arc.setFill(null);
         arc.setStroke(Color.WHITE);
         arc.setStrokeWidth(3);

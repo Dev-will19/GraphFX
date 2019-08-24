@@ -48,5 +48,5 @@ public interface Grafo {
 // IMPRIME LAS LISTAS DE ADYACENCIAS
 // ----------------------------------------
    
-	public void imprimirGrafo ();
+	public String imprimirGrafo ();
 }

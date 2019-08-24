@@ -280,7 +280,7 @@ public class GrafoMA implements Grafo {
 	// m�todo que imprime la tabla de adyacencias
 	// --------------------------------
 
-	public void imprimirGrafo() {
+	public String imprimirGrafo() {
 		System.out.println("La matriz contiene " + numVertices + " v�rtices: \n");
 		for (int i = 0; i < numVertices; i++) {
 			for (int j = 0; j < numVertices; j++) {
@@ -291,6 +291,7 @@ public class GrafoMA implements Grafo {
 			}
 			System.out.println();
 		}
+		return "";
 	}
 
 	public void imprimirPesos() {
