@@ -41,7 +41,7 @@ public class MesaTrabajoController implements Initializable {
     public Label lb;
     private boolean esDirigido;
     private boolean modoVertice;
-    private int IdVerticeInicial;
+    private VerticeGrafo IdVerticeInicial;
     private GrafoLA grafoLA;
     private List<VerticeGrafo> listaVertices;
     private List<AristaGrafo> aristaGrafoList;
@@ -50,7 +50,7 @@ public class MesaTrabajoController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         esDirigido = false;
         contadorVertices = 0;
-        IdVerticeInicial = -1;
+        IdVerticeInicial = null;
         modoVertice = true;
         aristaGrafoList = new ArrayList<>();
         listaVertices = new ArrayList<>();
@@ -93,13 +93,13 @@ public class MesaTrabajoController implements Initializable {
         /* Cuando el circulo es presionado*/
         verticeGrafo.setOnMouseClicked(event -> {
             if (!modoVertice) {                                         // Es decir, está en modo arista.
-                if (IdVerticeInicial == -1) {                              //No hay vertice inicial seleccionado
-                    IdVerticeInicial = verticeGrafo.getIdentificador();
+                if (IdVerticeInicial == null) {                              //No hay vertice inicial seleccionado
+                    IdVerticeInicial = verticeGrafo;
                     verticeGrafo.pintarColorSeleccionado();
                 } else {
                     verticeGrafo.pintarColorDefecto();
-                    dibujarArista(verticeGrafo.getIdentificador());
-                    IdVerticeInicial = -1;
+                    dibujarArista(verticeGrafo);
+                    IdVerticeInicial = null;
                 }
             }
         });
@@ -141,33 +141,21 @@ public class MesaTrabajoController implements Initializable {
         }
     }
 
-    private void dibujarArista(int IdVerticeFinal) {
-        VerticeGrafo verticeInicio = buscarVertice(IdVerticeInicial);
-        VerticeGrafo verticeFinal = buscarVertice(IdVerticeFinal);
-
-        if(IdVerticeInicial == IdVerticeFinal){
-            if (!(grafoLA.existeArista(IdVerticeInicial,IdVerticeFinal))){
-            verticeInicio.crearBucle();
-            verticeInicio.getVerticesAdyacentes().add(IdVerticeFinal);
+    private void dibujarArista(VerticeGrafo IdVerticeFinal) {
+        if (this.IdVerticeInicial == IdVerticeFinal) {
+            if (!(grafoLA.existeArista(IdVerticeInicial.getIdentificador(), IdVerticeFinal.getIdentificador()))) {
+                IdVerticeInicial.crearBucle();
+                IdVerticeInicial.getVerticesAdyacentes().add(IdVerticeFinal.getIdentificador());
             }
         } else {
-            AristaGrafo aristaGrafo = new AristaGrafo(contadorAristas++, verticeInicio, verticeFinal);
+            AristaGrafo aristaGrafo = new AristaGrafo(contadorAristas++, IdVerticeInicial, IdVerticeFinal);
             aristaGrafoList.add(aristaGrafo);
-            verticeInicio.getVerticesAdyacentes().add(IdVerticeFinal);
+            IdVerticeInicial.getVerticesAdyacentes().add(IdVerticeFinal.getIdentificador());
             if (!esDirigido) {
-                verticeFinal.getVerticesAdyacentes().add(IdVerticeInicial);
+                IdVerticeFinal.getVerticesAdyacentes().add(IdVerticeInicial.getIdentificador());
             }
             panelAristas.getChildren().add(aristaGrafo);
         }
-    }
-
-    private VerticeGrafo buscarVertice(int idVertice) {
-        for (VerticeGrafo verticeGrafo : listaVertices) {
-            if (verticeGrafo.getIdentificador() == idVertice) {
-                return verticeGrafo;
-            }
-        }
-        return null;
     }
 
     public void probar() {
