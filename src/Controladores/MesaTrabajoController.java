@@ -75,19 +75,6 @@ public class MesaTrabajoController implements Initializable {
 
     }
 
-    private void volverPrincipal() {
-        Pantalla.cargarPantalla("/Vistas/principal.fxml");
-    }
-
-    void establecerConfiguracion(boolean dirigido, boolean ponderado) {
-        String texto = "";
-        if (dirigido) texto += "es dirigido";
-        else texto += "no dirigido";
-        if (ponderado) texto += " + es ponderado";
-        else texto += " + no ponderado";
-        lb.setText(texto);
-    }
-
     private void establecerComportamientoVertices(VerticeGrafo verticeGrafo) {
 
         /* Cuando el circulo es presionado*/
@@ -131,6 +118,15 @@ public class MesaTrabajoController implements Initializable {
         });
     }
 
+    void establecerConfiguracion(boolean dirigido, boolean ponderado) {
+        String texto = "";
+        if (dirigido) texto += "es dirigido";
+        else texto += "no dirigido";
+        if (ponderado) texto += " + es ponderado";
+        else texto += " + no ponderado";
+        lb.setText(texto);
+    }
+
     private void dibujarVertices(MouseEvent event) {
         if (event.getClickCount() == 2 & modoVertice) {
             /* Crea un grupo con el vertice y texto */
@@ -156,6 +152,10 @@ public class MesaTrabajoController implements Initializable {
             }
             panelAristas.getChildren().add(aristaGrafo);
         }
+    }
+
+    private void volverPrincipal() {
+        Pantalla.cargarPantalla("/Vistas/principal.fxml");
     }
 
     public void probar() {
