@@ -1,4 +1,4 @@
-package Utils.tadGrafos.tadCola;
+package Entidades.tadCola;
 
 
 class NodoCola 

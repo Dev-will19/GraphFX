@@ -24,7 +24,7 @@ public class AristaGrafo extends Group {
         //Componentes del grupo
         linea = new Line();
         linea.setStrokeWidth(5);
-        linea.setStroke(Color.rgb(255,255,255));
+        linea.setStroke(Color.WHITE);
         texto = new Text();
         texto.setFill(Color.WHITE);
         posicionarElementos();

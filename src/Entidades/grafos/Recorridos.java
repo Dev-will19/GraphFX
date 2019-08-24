@@ -1,6 +1,6 @@
-package Utils.tadGrafos.grafos;
+package Entidades.grafos;
 
-import Utils.tadGrafos.tadCola.*;
+import Entidades.tadCola.*;
 
 public class Recorridos {
 

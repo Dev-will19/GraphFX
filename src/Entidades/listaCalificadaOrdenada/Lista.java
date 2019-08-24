@@ -1,4 +1,4 @@
-package Utils.tadGrafos.listaCalificadaOrdenada;
+package Entidades.listaCalificadaOrdenada;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,6 +1,6 @@
 * {
     /* Variables globales del tema */
-    -color-principal: #2f5c78;
+    -color-principal: #478fb6;
     -color-hint: #3b8ba9;
     -fondo: #2b2b2b;
     -gris: rgba(0, 0, 0, 0.65);
@@ -58,12 +58,23 @@
     -fx-border-radius: 100%;
 }
 
+.jfx-button-desplegable {
+    -fx-background-color: -color-principal;
+    -fx-text-fill: -blanco;
+    -fx-background-radius: 0px;
+}
+
 .jfx-snackbar-content {
-    -fx-background-color: #3facff;
+    -fx-background-color: -color-principal;
     -fx-padding: 5;
     -fx-spacing: 5;
 }
 
 .jfx-snackbar-toast {
-    -fx-text-fill: WHITE;
+    -fx-text-fill: -blanco;
+}
+
+.jfx-area-texto {
+    -fx-background-color: -blanco;
+    -fx-background-radius: 0px;
 }

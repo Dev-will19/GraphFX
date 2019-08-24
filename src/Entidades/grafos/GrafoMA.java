@@ -1,4 +1,4 @@
-package Utils.tadGrafos.grafos;
+package Entidades.grafos;
 
 import java.io.*;
 import java.util.*;
@@ -7,20 +7,18 @@ public class GrafoMA implements Grafo {
 	int maxNodos; // Tama�o m�ximo de la tabla.
 	int numVertices; // N�mero de v�rtices.
 	boolean matrizAdy[][]; // Matriz de adyacencias del grafo.
-	int pesos[][]; // Matriz de pesos del grafo ponderado.
+	int[][] pesos; // Matriz de pesos de aristas
 	boolean dirigido; // Indica si es dirigido o no.
-	static int INFINITO = 999999999;
 
-	/**	
-	 * CONSTRUCTORES:
-	 * public Grafo() --> constructor por defecto, construye un grafo vacio
-	 * public Grafo (int n) --> construye una matriz de nxn con los valores a false.
-	 * public Grafo (BufferedReader buffer) -->  Constructor con BufferedReader (a m� no se me ha ocurrido).
-	 *  		Primero le pide al usuario el n�mero de v�rtices del grafo (n).
-	 *  		Luego crea una matriz de nxn.
-	 *  		A continuaci�n, le pide n veces al usuario que introduzca una l�nea con n tokens,
-	 *  		que ser�n los valores de las celdas de la matriz. 
-	 *  		StringTokenizer identifica los valores introducidos por el usuario.
+	/**
+	 * CONSTRUCTORES: public Grafo() --> constructor por defecto, construye un grafo
+	 * vacio public Grafo (int n) --> construye una matriz de nxn con los valores a
+	 * false. public Grafo (BufferedReader buffer) --> Constructor con
+	 * BufferedReader (a m� no se me ha ocurrido). Primero le pide al usuario el
+	 * n�mero de v�rtices del grafo (n). Luego crea una matriz de nxn. A
+	 * continuaci�n, le pide n veces al usuario que introduzca una l�nea con n
+	 * tokens, que ser�n los valores de las celdas de la matriz. StringTokenizer
+	 * identifica los valores introducidos por el usuario.
 	 **/
 
 	public GrafoMA() {
@@ -98,6 +96,10 @@ public class GrafoMA implements Grafo {
 			}
 		return g;
 	}
+	
+	public int[][] obtenerPesos(){
+		return pesos;
+	}
 
 	// ------------------------------------
 
@@ -116,7 +118,7 @@ public class GrafoMA implements Grafo {
 			System.out.println("Error, se supera el n�mero de nodos m�ximo del grafo");
 		else {
 			for (int i = 0; i < numVertices + n; i++) {
-				for (int j = numVertices; j < numVertices + n; j++) { // simplemento a�ado el valor false a las celdas
+				for (int j = numVertices; j < numVertices + n; j++) {// simplemento a�ado el valor false a las celdas
 					matrizAdy[i][j] = matrizAdy[j][i] = false;
 					pesos[i][j] = pesos[j][i] = INFINITO;
 				}
@@ -160,11 +162,6 @@ public class GrafoMA implements Grafo {
 		}
 	}
 
-	public void insertaArista(int i, int j, int peso) {
-		insertaArista(i, j);
-		insertaPeso(i, j, peso);
-	}
-
 	public void insertaPeso(int i, int j, int peso) {
 		if (existeArista(i, j)) {
 			pesos[i][j] = peso;
@@ -172,6 +169,11 @@ public class GrafoMA implements Grafo {
 				pesos[j][i] = pesos[i][j];
 			}
 		}
+	}
+
+	public void insertaArista(int i, int j, int peso) {
+		insertaArista(i, j);
+		insertaPeso(i, j, peso);
 	}
 
 	public void eliminaArista(int i, int j) {
@@ -283,28 +285,25 @@ public class GrafoMA implements Grafo {
 		for (int i = 0; i < numVertices; i++) {
 			for (int j = 0; j < numVertices; j++) {
 				if (matrizAdy[i][j])
-					System.out.print("1\t");
+					System.out.print("1 ");
 				else
-					System.out.print("0\t");
+					System.out.print("0 ");
 			}
 			System.out.println();
 		}
 	}
-
-	// --------------------------------
-	// m�todo que imprime la tabla de pesos
-	// --------------------------------
 
 	public void imprimirPesos() {
 		System.out.println("La matriz contiene " + numVertices + " v�rtices: \n");
 		for (int i = 0; i < numVertices; i++) {
 			for (int j = 0; j < numVertices; j++) {
 				if (pesos[i][j] == INFINITO)
-					System.out.print('\u221e' + "\t"); //imprime s�mbolo de infinito si la codificaci�n de salida es UTF-8
+					System.out.print('\u221e' + "\t");
 				else
 					System.out.print(pesos[i][j] + "\t");
 			}
 			System.out.println();
 		}
 	}
+
 }// end class

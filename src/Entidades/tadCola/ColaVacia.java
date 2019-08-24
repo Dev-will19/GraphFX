@@ -1,4 +1,4 @@
-package Utils.tadGrafos.tadCola;
+package Entidades.tadCola;
 
 @SuppressWarnings("serial")
 public class ColaVacia extends Exception {

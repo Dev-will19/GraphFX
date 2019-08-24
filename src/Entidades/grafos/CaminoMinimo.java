@@ -1,4 +1,4 @@
-package Utils.tadGrafos.grafos;
+package Entidades.grafos;
 
 public class CaminoMinimo {
 	private int[][] Pesos;
@@ -7,10 +7,10 @@ public class CaminoMinimo {
 	private boolean[] F;
 	private int s, n; // v�rtice origen y n�mero de v�rtices
 
-	public CaminoMinimo(GrafoMA gp, int origen) {
+	public CaminoMinimo(Grafo gp, int origen) {
 		n = gp.obtenerNumVertices();
 		s = origen;
-		Pesos = gp.pesos;
+		Pesos = gp.obtenerPesos();
 		ultimo = new int[n];
 		D = new int[n];
 		F = new boolean[n];
@@ -42,7 +42,7 @@ public class CaminoMinimo {
 	}
 
 	private int minimo() {
-		int mx = GrafoMA.INFINITO;
+		int mx = Grafo.INFINITO;
 		int v = 1;
 		for (int j = 1; j < n; j++)
 			if (!F[j] && (D[j] <= mx)) {
@@ -51,7 +51,7 @@ public class CaminoMinimo {
 			}
 		return v;
 	}
-	
+
 	public void recuperaCamino(int v) {
 		int anterior = ultimo[v];
 		if (v != s) {
@@ -60,4 +60,5 @@ public class CaminoMinimo {
 		} else
 			System.out.print("V" + s);
 	}
+
 }

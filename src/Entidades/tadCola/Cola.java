@@ -1,4 +1,4 @@
-package Utils.tadGrafos.tadCola;
+package Entidades.tadCola;
 
 import java.io.IOException;
 

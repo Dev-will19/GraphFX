@@ -2,6 +2,7 @@ package Entidades;
 
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Arc;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 
@@ -15,13 +16,14 @@ public class VerticeGrafo extends Group {
     private int identificador;
     private double posX;
     private double posY;
-    private List<AristaGrafo> aristas;
+    private List<Integer> verticesAdyacentes;
     private Circle circulo;
+    private Arc bucle;
     private Text texto;
 
     public VerticeGrafo(int identificador, double posX, double posY) {
         this.identificador = identificador;
-        this.aristas = new ArrayList<>();
+        this.verticesAdyacentes = new ArrayList<>();
         this.posX = posX;
         this.posY = posY;
         crearComponentes();
@@ -34,6 +36,7 @@ public class VerticeGrafo extends Group {
         circulo.setCursor(HAND);
         texto = new Text(Integer.toString(identificador));
         texto.setFill(Color.WHITE);
+        bucle = null;
         posicionarElementos();
         getChildren().addAll(circulo, texto);
     }
@@ -62,8 +65,8 @@ public class VerticeGrafo extends Group {
         return circulo;
     }
 
-    public List<AristaGrafo> getAristas() {
-        return aristas;
+    public List<Integer> getVerticesAdyacentes() {
+        return verticesAdyacentes;
     }
 
     public void pintarColorDefecto() {
@@ -77,6 +80,8 @@ public class VerticeGrafo extends Group {
     public void posicionarElementos() {
         setPosicionCirculo();
         setPosicionTexto();
+        if(bucle != null)
+            setPosicionBucle();
     }
 
     private void setPosicionCirculo() {
@@ -87,5 +92,20 @@ public class VerticeGrafo extends Group {
     private void setPosicionTexto() {
         texto.setX(getPosX() - 25);
         texto.setY(getPosY() - 20);
+    }
+
+    private void setPosicionBucle() {
+        bucle.setCenterX(getPosX()-20);
+        bucle.setCenterY(getPosY()-20);
+    }
+
+    public void crearBucle() {
+        Arc arc = new Arc(getPosX() - 20, getPosY() - 20, 20, 20, 0, 270);
+        arc.setFill(null);
+        arc.setStroke(Color.WHITE);
+        arc.setStrokeWidth(3);
+        bucle = arc;
+        getChildren().add(bucle);
+        posicionarElementos();
     }
 }

@@ -1,8 +1,10 @@
-package Utils.tadGrafos.grafos;
+package Entidades.grafos;
 
 public interface Grafo {
+	static int INFINITO = 999999999;
 	
 	public int obtenerNumVertices ();
+	public int[][] obtenerPesos();
 	
 //  --------------------
 //  ARISTAS

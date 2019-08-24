@@ -1,4 +1,4 @@
-package Utils.tadGrafos.listaCalificadaOrdenada;
+package Entidades.listaCalificadaOrdenada;
 
 public class NodoLista {
 	public int clave;
