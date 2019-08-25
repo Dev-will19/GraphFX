@@ -19,7 +19,7 @@ public class Recorridos {
 
     //procedimiento no recursivo
     public static String profundidad(Grafo g) {
-        StringBuilder resul = new StringBuilder("Recorrido en amplitud del grafo:\n");
+        StringBuilder resul = new StringBuilder("Recorrido en profundidad del grafo:\n");
         boolean[] visitados = new boolean[g.obtenerNumVertices()];
         //inicializo el vector: pongo todos los campos a false
         for (int i = 0; i < g.obtenerNumVertices(); i++)

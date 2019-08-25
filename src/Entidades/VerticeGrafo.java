@@ -86,7 +86,7 @@ public class VerticeGrafo extends Group {
     }
 
     public void pintarColorSeleccionado() {
-        circulo.setFill(Color.rgb(54, 139, 30));
+        circulo.setFill(Color.rgb(59, 228, 255));
     }
 
     public void posicionarElementos() {

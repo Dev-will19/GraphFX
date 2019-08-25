@@ -26,7 +26,6 @@ import java.util.ResourceBundle;
 public class MesaTrabajoController implements Initializable {
 
     private static int contadorVertices;
-    private static int contadorAristas;
 
     public BorderPane root;
     public StackPane panelPila;
@@ -45,6 +44,7 @@ public class MesaTrabajoController implements Initializable {
 
     private boolean esDirigido;
     private boolean esPonderado;
+    private boolean SeMostroNotificacionArrastre;
     private boolean modoVertice;
     private VerticeGrafo verticeInicial;
     private GrafoLA grafoLA;
@@ -54,25 +54,26 @@ public class MesaTrabajoController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         valoresPorDefecto();
-        notificacionInferior = new JFXSnackbar(root);
         establecerComportamientos();
     }
 
     private void valoresPorDefecto() {
         contadorVertices = 0;
-        contadorAristas = 0;
         verticeInicial = null;
         modoVertice = true;
+        SeMostroNotificacionArrastre = false;
         listaAristas = new ArrayList<>();
         listaVertices = new ArrayList<>();
     }
 
     private void establecerComportamientos() {
+
+        notificacionInferior = new JFXSnackbar(root);
         btnReiniciar.setOnAction(event -> {
             panelAristas.getChildren().removeAll(listaAristas);
             panelVertices.getChildren().removeAll(listaVertices);
-            deseleccionarNodo();
             valoresPorDefecto();
+            accionesAlCambiarModos();
             menuNodos.animateList(false);
             notificacionInferior.fireEvent(new JFXSnackbar.SnackbarEvent(
                     new JFXSnackbarLayout("Espacio de trabajo reiniciado!")));
@@ -81,19 +82,24 @@ public class MesaTrabajoController implements Initializable {
         panelPila.setOnMouseClicked(this::dibujarVertices);
         notificacionInferior.setPrefWidth(300);
         btnArista.setOnAction(event -> {
-            deseleccionarNodo();
+            accionesAlCambiarModos();
             modoVertice = false;
             menuNodos.animateList(false);
             notificacionInferior.fireEvent(new JFXSnackbar.SnackbarEvent(
                     new JFXSnackbarLayout("Modo arista activado!")));
         });
         btnVertice.setOnAction(event -> {
-            deseleccionarNodo();
+            accionesAlCambiarModos();
             modoVertice = true;
             menuNodos.animateList(false);
             notificacionInferior.fireEvent(new JFXSnackbar.SnackbarEvent(
                     new JFXSnackbarLayout("Modo vértice activado!")));
         });
+    }
+
+    private void accionesAlCambiarModos() {
+        SeMostroNotificacionArrastre = false;
+        deseleccionarNodo();
     }
 
     private void deseleccionarNodo() {
@@ -132,6 +138,12 @@ public class MesaTrabajoController implements Initializable {
                         }
                     }
                 }
+            } else {
+                if (!SeMostroNotificacionArrastre) {
+                    notificacionInferior.fireEvent(new JFXSnackbar.SnackbarEvent(new JFXSnackbarLayout(
+                            "¿Estás intentando mover el vertice?, primero pasate al modo edicion de vertices!")));
+                    SeMostroNotificacionArrastre = true;
+                }
             }
         });
 
@@ -168,7 +180,6 @@ public class MesaTrabajoController implements Initializable {
             for (AristaGrafo aristaGrafo : aristaGrafoListBorrar) {
                 panelAristas.getChildren().remove(aristaGrafo);
                 listaAristas.remove(aristaGrafo);
-                contadorAristas--;
             }
             contadorVertices--;
             listaVertices.remove(verticeGrafo);
@@ -200,7 +211,7 @@ public class MesaTrabajoController implements Initializable {
             List<Integer> verticesAdyacentes = verticeGrafo.getVerticesAdyacentes();
             /* comprueba que no existan referencias al vertice borrado */
             for (int i = 0; i < verticesAdyacentes.size(); i++) {
-                if (verticesAdyacentes.get(i) > identificador) verticesAdyacentes.set(i, verticesAdyacentes.get(i)-1);
+                if (verticesAdyacentes.get(i) > identificador) verticesAdyacentes.set(i, verticesAdyacentes.get(i) - 1);
             }
         }
     }
@@ -242,7 +253,7 @@ public class MesaTrabajoController implements Initializable {
             verticeInicial.crearBucle();
             verticeInicial.getVerticesAdyacentes().add(verticeFinal.getIdentificador());
         } else {
-            AristaGrafo aristaGrafo = new AristaGrafo(contadorAristas++, verticeInicial, verticeFinal);
+            AristaGrafo aristaGrafo = new AristaGrafo(verticeInicial, verticeFinal);
             listaAristas.add(aristaGrafo);
             verticeInicial.getVerticesAdyacentes().add(verticeFinal.getIdentificador());
             if (!esDirigido) {
