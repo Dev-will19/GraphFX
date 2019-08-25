@@ -43,7 +43,6 @@ public class MesaTrabajoController implements Initializable {
     public Label lb;
 
     private boolean esDirigido;
-    private boolean esPonderado;
     private boolean SeMostroNotificacionArrastre;
     private boolean modoVertice;
     private VerticeGrafo verticeInicial;
@@ -199,9 +198,8 @@ public class MesaTrabajoController implements Initializable {
             List<Integer> verticesAdyacentes = verticeGrafo.getVerticesAdyacentes();    // obtenga sus adyacencias
 
             /* comprueba que no existan referencias al vertice borrado */
-            for (int i = 0; i < verticesAdyacentes.size(); i++) {
+            for (int i = 0; i < verticesAdyacentes.size(); i++)
                 if (verticesAdyacentes.get(i) == identificador) verticesAdyacentes.remove(i);
-            }
         }
         reubicarListaVerticesAdyacentes(identificador);
     }
@@ -210,9 +208,8 @@ public class MesaTrabajoController implements Initializable {
         for (VerticeGrafo verticeGrafo : listaVertices) {
             List<Integer> verticesAdyacentes = verticeGrafo.getVerticesAdyacentes();
             /* comprueba que no existan referencias al vertice borrado */
-            for (int i = 0; i < verticesAdyacentes.size(); i++) {
+            for (int i = 0; i < verticesAdyacentes.size(); i++)
                 if (verticesAdyacentes.get(i) > identificador) verticesAdyacentes.set(i, verticesAdyacentes.get(i) - 1);
-            }
         }
     }
 
@@ -230,7 +227,6 @@ public class MesaTrabajoController implements Initializable {
     void establecerConfiguracion(boolean dirigido, boolean ponderado) {
         String texto = "";
         esDirigido = dirigido;
-        esPonderado = ponderado;
         if (dirigido) texto += "es dirigido";
         else texto += "no dirigido";
         if (ponderado) texto += " + es ponderado";
@@ -249,19 +245,42 @@ public class MesaTrabajoController implements Initializable {
     }
 
     private void dibujarArista(VerticeGrafo verticeFinal) {
-        if (this.verticeInicial == verticeFinal) {
+        if (this.verticeInicial == verticeFinal) {              // Comprueba que se selecciono el mismo vertice
+
+            /* De ser el caso, crea un bucle visual y se añade a si mismo como adyacencia. */
             verticeInicial.crearBucle();
             verticeInicial.getVerticesAdyacentes().add(verticeFinal.getIdentificador());
         } else {
-            AristaGrafo aristaGrafo = new AristaGrafo(verticeInicial, verticeFinal);
-            listaAristas.add(aristaGrafo);
-            verticeInicial.getVerticesAdyacentes().add(verticeFinal.getIdentificador());
-            if (!esDirigido) {
-                verticeFinal.getVerticesAdyacentes().add(verticeInicial.getIdentificador());
+            if (!existeArista(verticeFinal)) {
+                AristaGrafo aristaGrafo = new AristaGrafo(verticeInicial, verticeFinal);
+                listaAristas.add(aristaGrafo);
+                verticeInicial.getVerticesAdyacentes().add(verticeFinal.getIdentificador());
+                if (!esDirigido) {          // Si el grafo no es dirigido, añade al vertice final la adyacencia con el inicial
+                    verticeFinal.getVerticesAdyacentes().add(verticeInicial.getIdentificador());
+                }
+                panelAristas.getChildren().add(aristaGrafo);
+            } else {
+                notificacionInferior.fireEvent(new JFXSnackbar.SnackbarEvent(
+                        new JFXSnackbarLayout("Ya existe una arista entre estos vertices!")));
             }
-            panelAristas.getChildren().add(aristaGrafo);
         }
         deseleccionarNodo();
+    }
+
+    private boolean existeArista(VerticeGrafo verticeFinal) {
+        for (AristaGrafo aristaGrafo : listaAristas) {
+            if (aristaGrafo.getVerticeInicial().getIdentificador() == verticeInicial.getIdentificador() &&
+                    aristaGrafo.getVerticeFinal().getIdentificador() == verticeFinal.getIdentificador()) {
+                return true;
+            }
+
+            // Comprobación a la inversa para detectar cuando sea no dirigido
+            if (esDirigido && aristaGrafo.getVerticeInicial().getIdentificador() == verticeFinal.getIdentificador() &&
+                    aristaGrafo.getVerticeFinal().getIdentificador() == verticeInicial.getIdentificador()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void instanciarGrafo() {
