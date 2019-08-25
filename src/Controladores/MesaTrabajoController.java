@@ -44,6 +44,7 @@ public class MesaTrabajoController implements Initializable {
     public Label lb;
 
     private boolean esDirigido;
+    private boolean esPonderado;
     private boolean modoVertice;
     private VerticeGrafo verticeInicial;
     private GrafoLA grafoLA;
@@ -52,7 +53,6 @@ public class MesaTrabajoController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        esDirigido = false;
         valoresPorDefecto();
         notificacionInferior = new JFXSnackbar(root);
         establecerComportamientos();
@@ -71,6 +71,7 @@ public class MesaTrabajoController implements Initializable {
         btnReiniciar.setOnAction(event -> {
             panelAristas.getChildren().removeAll(listaAristas);
             panelVertices.getChildren().removeAll(listaVertices);
+            deseleccionarNodo();
             valoresPorDefecto();
             menuNodos.animateList(false);
             notificacionInferior.fireEvent(new JFXSnackbar.SnackbarEvent(
@@ -80,17 +81,26 @@ public class MesaTrabajoController implements Initializable {
         panelPila.setOnMouseClicked(this::dibujarVertices);
         notificacionInferior.setPrefWidth(300);
         btnArista.setOnAction(event -> {
+            deseleccionarNodo();
             modoVertice = false;
             menuNodos.animateList(false);
             notificacionInferior.fireEvent(new JFXSnackbar.SnackbarEvent(
                     new JFXSnackbarLayout("Modo arista activado!")));
         });
         btnVertice.setOnAction(event -> {
+            deseleccionarNodo();
             modoVertice = true;
             menuNodos.animateList(false);
             notificacionInferior.fireEvent(new JFXSnackbar.SnackbarEvent(
                     new JFXSnackbarLayout("Modo vértice activado!")));
         });
+    }
+
+    private void deseleccionarNodo() {
+        if (verticeInicial != null) {
+            verticeInicial.pintarColorDefecto();
+            verticeInicial = null;
+        }
     }
 
     private void establecerComportamientoVertices(VerticeGrafo verticeGrafo) {
@@ -129,6 +139,8 @@ public class MesaTrabajoController implements Initializable {
         ContextMenu menu = new ContextMenu();
         MenuItem editar_vertice = new MenuItem("Editar vértice");
         MenuItem borrar_vertice = new MenuItem("Borrar vértice");
+
+        /* accion del botón editar vertice */
         editar_vertice.setOnAction(event -> {
             TextInputDialog dialog = new TextInputDialog(Integer.toString(verticeGrafo.getIdentificador()));
             dialog.setTitle("Editar vertice");
@@ -137,8 +149,13 @@ public class MesaTrabajoController implements Initializable {
             Optional<String> result = dialog.showAndWait();
             result.ifPresent(verticeGrafo::setTexto);
         });
+
+        /* accion del botón eliminar vertice */
         borrar_vertice.setOnAction(event -> {
-            /* Extrae la referencia de todas las aristas involucradas con el vertice, y las inserta en una lista auxiliar*/
+
+            /* Extrae la referencia de todas las aristas involucradas con el vertice, y las inserta en una lista auxiliar
+             *  con el fin de no interferir con el borrado dentro del bucle
+             */
             List<AristaGrafo> aristaGrafoListBorrar = new ArrayList<>();
             if (verticeGrafo.getVerticesAdyacentes().size() != 0) {       // Si posee aristas
                 for (AristaGrafo aristaGrafo : listaAristas) {
@@ -148,13 +165,16 @@ public class MesaTrabajoController implements Initializable {
                     }
                 }
             }
-
             for (AristaGrafo aristaGrafo : aristaGrafoListBorrar) {
                 panelAristas.getChildren().remove(aristaGrafo);
                 listaAristas.remove(aristaGrafo);
+                contadorAristas--;
             }
+            contadorVertices--;
             listaVertices.remove(verticeGrafo);
+            removerAdyacenciasImplicadas(verticeGrafo.getIdentificador());
             panelVertices.getChildren().remove(verticeGrafo);
+            reubicarVertices();                     // accion necesaria para desplazar vertices hacia la posicion correcta
         });
         menu.getItems().addAll(editar_vertice, borrar_vertice);
         verticeGrafo.getCirculo().setOnContextMenuRequested(event -> {
@@ -163,9 +183,43 @@ public class MesaTrabajoController implements Initializable {
         });
     }
 
+    private void removerAdyacenciasImplicadas(int identificador) {
+        for (VerticeGrafo verticeGrafo : listaVertices) {                               // Por cada vertice restante
+            List<Integer> verticesAdyacentes = verticeGrafo.getVerticesAdyacentes();    // obtenga sus adyacencias
+
+            /* comprueba que no existan referencias al vertice borrado */
+            for (int i = 0; i < verticesAdyacentes.size(); i++) {
+                if (verticesAdyacentes.get(i) == identificador) verticesAdyacentes.remove(i);
+            }
+        }
+        reubicarListaVerticesAdyacentes(identificador);
+    }
+
+    private void reubicarListaVerticesAdyacentes(int identificador) {
+        for (VerticeGrafo verticeGrafo : listaVertices) {
+            List<Integer> verticesAdyacentes = verticeGrafo.getVerticesAdyacentes();
+            /* comprueba que no existan referencias al vertice borrado */
+            for (int i = 0; i < verticesAdyacentes.size(); i++) {
+                if (verticesAdyacentes.get(i) > identificador) verticesAdyacentes.set(i, verticesAdyacentes.get(i)-1);
+            }
+        }
+    }
+
+    private void reubicarVertices() {
+        for (int i = 0; i < listaVertices.size(); i++) {
+            listaVertices.get(i).setIdentificador(i);
+            try {
+                Integer.parseInt(listaVertices.get(i).getTexto());
+                listaVertices.get(i).setTexto(Integer.toString(i));
+            } catch (NumberFormatException ignored) {
+            }
+        }
+    }
+
     void establecerConfiguracion(boolean dirigido, boolean ponderado) {
         String texto = "";
         esDirigido = dirigido;
+        esPonderado = ponderado;
         if (dirigido) texto += "es dirigido";
         else texto += "no dirigido";
         if (ponderado) texto += " + es ponderado";
@@ -194,20 +248,18 @@ public class MesaTrabajoController implements Initializable {
             if (!esDirigido) {
                 verticeFinal.getVerticesAdyacentes().add(verticeInicial.getIdentificador());
             }
-            verticeInicial.pintarColorDefecto();
             panelAristas.getChildren().add(aristaGrafo);
         }
+        deseleccionarNodo();
     }
-
 
     private void instanciarGrafo() {
         grafoLA = null;
-        grafoLA = new GrafoLA(listaVertices.size(), false);
+        grafoLA = new GrafoLA(listaVertices.size(), esDirigido);
         grafoLA.insertaVertice(listaVertices.size());
-
         for (VerticeGrafo verticeGrafo : listaVertices) {
-            List<Integer> aristaGrafoList = verticeGrafo.getVerticesAdyacentes();
-            for (Integer arista : aristaGrafoList) {
+            List<Integer> adyacentes = verticeGrafo.getVerticesAdyacentes();
+            for (Integer arista : adyacentes) {
                 grafoLA.insertaArista(verticeGrafo.getIdentificador(), arista);
             }
         }

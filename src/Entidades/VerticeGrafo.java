@@ -45,6 +45,10 @@ public class VerticeGrafo extends Group {
         return identificador;
     }
 
+    public void setIdentificador(int identificador) {
+        this.identificador = identificador;
+    }
+
     double getPosX() {
         return posX;
     }
@@ -63,6 +67,10 @@ public class VerticeGrafo extends Group {
 
     public Circle getCirculo() {
         return circulo;
+    }
+
+    public String getTexto() {
+        return texto.getText();
     }
 
     public void setTexto(String texto) {
