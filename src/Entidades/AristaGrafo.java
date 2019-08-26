@@ -1,6 +1,5 @@
 package Entidades;
 
-import com.sun.javafx.scene.control.skin.LabeledImpl;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -38,10 +37,6 @@ public class AristaGrafo extends Group {
 
     public Line getLinea() {
         return linea;
-    }
-
-    public void setLinea(Line linea) {
-        this.linea = linea;
     }
 
     public void posicionarElementos() {

@@ -8,6 +8,9 @@ import Entidades.grafos.Recorridos;
 import Entidades.tadCola.ColaVacia;
 import Utils.Pantalla;
 import com.jfoenix.controls.*;
+import de.jensd.fx.glyphs.GlyphsBuilder;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconName;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
@@ -88,6 +91,7 @@ public class MesaTrabajoController implements Initializable {
         btnArista.setOnAction(event -> {
             cambiarModoArista();
             mostrarNotificacionPush("Modo arista activado!");
+            mostrarNotificacionPush("Ahora puede añadir mas aristas");
         });
 
         btnVertice.setOnAction(event -> {
@@ -100,15 +104,21 @@ public class MesaTrabajoController implements Initializable {
                     ? "Ahora puede eliminar aristas individualmente" : "Ahora puede añadir mas aristas");
             puedeBorrarArista = btnEliminarArista.isSelected();
             if (puedeBorrarArista) {
+                btnEliminarArista.setGraphic(GlyphsBuilder.create(FontAwesomeIcon.class).icon(FontAwesomeIconName.MINUS)
+                        .style("-fx-font-size: 26; -fx-fill: white;").build());
                 panelAristas.toFront();
                 menuNodos.toFront();
                 btnEliminarArista.toFront();
             } else {
+                btnEliminarArista.setGraphic(GlyphsBuilder.create(FontAwesomeIcon.class).icon(FontAwesomeIconName.PLUS)
+                        .style("-fx-font-size: 26; -fx-fill: white;").build());
                 panelVertices.toFront();
                 menuNodos.toFront();
                 btnEliminarArista.toFront();
             }
         });
+
+
     }
 
     private void cambiarModoArista() {
@@ -144,24 +154,6 @@ public class MesaTrabajoController implements Initializable {
 
     private void mostrarNotificacionPush(String texto) {
         notificacionInferior.fireEvent(new JFXSnackbar.SnackbarEvent(new JFXSnackbarLayout(texto)));
-    }
-
-    private void removerAdyacenciasImplicadas(int identificador) {
-        for (VerticeGrafo verticeGrafo : listaVertices) {                               // Por cada vertice restante
-            List<Integer> verticesAdyacentes = verticeGrafo.getVerticesAdyacentes();    // obtenga sus adyacencias
-
-            /* comprueba que no existan referencias al vertice borrado */
-            for (int i = 0; i < verticesAdyacentes.size(); i++)
-                if (verticesAdyacentes.get(i) == identificador) verticesAdyacentes.remove(i);
-        }
-        /* Reasigna las adyacencias de cada vertice */
-        for (VerticeGrafo verticeGrafo : listaVertices) {
-            List<Integer> verticesAdyacentes = verticeGrafo.getVerticesAdyacentes();
-            /* comprueba que no existan referencias al vertice borrado */
-            for (int i = 0; i < verticesAdyacentes.size(); i++)
-                if (verticesAdyacentes.get(i) >= identificador)
-                    verticesAdyacentes.set(i, verticesAdyacentes.get(i) - 1);
-        }
     }
 
     void establecerConfiguracion(boolean dirigido) {
@@ -262,11 +254,19 @@ public class MesaTrabajoController implements Initializable {
              *  con el fin de no interferir con el borrado dentro del bucle
              */
             List<AristaGrafo> aristaGrafoListBorrar = new ArrayList<>();
-            if (verticeGrafo.getVerticesAdyacentes().size() != 0) {       // Si posee aristas
+            if (esDirigido) {
                 for (AristaGrafo aristaGrafo : listaAristas) {
-                    if (aristaGrafo.getVerticeInicial().getIdentificador() == verticeGrafo.getIdentificador() ||
-                            aristaGrafo.getVerticeFinal().getIdentificador() == verticeGrafo.getIdentificador()) {
+                    if (verticeGrafo.getIdentificador() == aristaGrafo.getVerticeInicial().getIdentificador()) {
                         aristaGrafoListBorrar.add(aristaGrafo);
+                    }
+                }
+            } else {
+                if (verticeGrafo.getVerticesAdyacentes().size() != 0) {       // Si posee aristas
+                    for (AristaGrafo aristaGrafo : listaAristas) {
+                        if (aristaGrafo.getVerticeInicial() == verticeGrafo ||
+                                aristaGrafo.getVerticeFinal() == verticeGrafo) {
+                            aristaGrafoListBorrar.add(aristaGrafo);
+                        }
                     }
                 }
             }
@@ -329,6 +329,24 @@ public class MesaTrabajoController implements Initializable {
         menu.getItems().addAll(borrarArista);
 
         aristaGrafo.setOnMouseClicked(event -> menu.show(aristaGrafo.getLinea(), event.getScreenX(), event.getScreenY()));
+    }
+
+    private void removerAdyacenciasImplicadas(int identificador) {
+        for (VerticeGrafo verticeGrafo : listaVertices) {                               // Por cada vertice restante
+            List<Integer> verticesAdyacentes = verticeGrafo.getVerticesAdyacentes();    // obtenga sus adyacencias
+
+            /* comprueba que no existan referencias al vertice borrado */
+            for (int i = 0; i < verticesAdyacentes.size(); i++)
+                if (verticesAdyacentes.get(i) == identificador) verticesAdyacentes.remove(i);
+        }
+        /* Reasigna las adyacencias de cada vertice */
+        for (VerticeGrafo verticeGrafo : listaVertices) {
+            List<Integer> verticesAdyacentes = verticeGrafo.getVerticesAdyacentes();
+            /* comprueba que no existan referencias al vertice borrado */
+            for (int i = 0; i < verticesAdyacentes.size(); i++)
+                if (verticesAdyacentes.get(i) >= identificador)
+                    verticesAdyacentes.set(i, verticesAdyacentes.get(i) - 1);
+        }
     }
 
     private boolean existeArista(VerticeGrafo verticeFinal) {
