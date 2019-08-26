@@ -49,7 +49,7 @@ public class VerticeGrafo extends Group {
         this.identificador = identificador;
     }
 
-    double getPosX() {
+    public double getPosX() {
         return posX;
     }
 
@@ -57,7 +57,7 @@ public class VerticeGrafo extends Group {
         this.posX = posX;
     }
 
-    double getPosY() {
+    public double getPosY() {
         return posY;
     }
 
@@ -112,11 +112,7 @@ public class VerticeGrafo extends Group {
     }
 
     public void crearBucle() {
-        Arc arc = new Arc(getPosX() - 20, getPosY() + 20, 20, 20, 90, 270);
-        arc.setFill(null);
-        arc.setStroke(Color.WHITE);
-        arc.setStrokeWidth(3);
-        bucle = arc;
+        bucle = new Bucle(getPosX(),getPosY());
         getChildren().add(bucle);
         posicionarElementos();
     }

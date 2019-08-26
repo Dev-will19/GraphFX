@@ -1,6 +1,7 @@
 package Controladores;
 
 import Entidades.AristaGrafo;
+import Entidades.Arrow;
 import Entidades.VerticeGrafo;
 import Entidades.grafos.Grafo;
 import Entidades.grafos.GrafoLA;
@@ -42,7 +43,7 @@ public class MesaTrabajoController implements Initializable {
     private JFXSnackbar notificacionInferior;
     public Label lb;
 
-    private boolean esDirigido;
+    public static boolean esDirigido;
     private boolean SeMostroNotificacionArrastre;
     private boolean modoVertice;
     private VerticeGrafo verticeInicial;
@@ -66,7 +67,6 @@ public class MesaTrabajoController implements Initializable {
     }
 
     private void establecerComportamientos() {
-
         notificacionInferior = new JFXSnackbar(root);
         btnReiniciar.setOnAction(event -> {
             panelAristas.getChildren().removeAll(listaAristas);
@@ -186,9 +186,12 @@ public class MesaTrabajoController implements Initializable {
             panelVertices.getChildren().remove(verticeGrafo);
             reubicarVertices();                     // accion necesaria para desplazar vertices hacia la posicion correcta
         });
+
         menu.getItems().addAll(editar_vertice, borrar_vertice);
+
+        /* Permite mostrar el menu, solo en modo vertice */
         verticeGrafo.getCirculo().setOnContextMenuRequested(event -> {
-            if (modoVertice)                                             // Permite mostrar el menu, solo en modo vertice
+            if (modoVertice)
                 menu.show(verticeGrafo.getCirculo(), event.getScreenX(), event.getScreenY());
         });
     }
