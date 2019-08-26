@@ -12,7 +12,6 @@ import java.util.ResourceBundle;
 
 public class PrincipalController implements Initializable {
 
-    public JFXToggleButton tglPonderado;
     public JFXToggleButton tglDirigido;
     public JFXButton btnEmpezar;
     public JFXButton btnSalir;
@@ -20,9 +19,7 @@ public class PrincipalController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         tglDirigido.setText("Grafo no dirigido");
-        tglPonderado.setText("Grafo no ponderado");
         tglDirigido.setOnAction(event -> cambioEstadoDirigido());
-        tglPonderado.setOnAction(event -> cambioEstadoPonderado());
         btnEmpezar.setOnAction(event -> abrirEspacioDeTrabajo());
         btnSalir.setOnAction(event -> terminarPrograma());
     }
@@ -30,11 +27,6 @@ public class PrincipalController implements Initializable {
     private void cambioEstadoDirigido() {
         if(tglDirigido.isSelected()) tglDirigido.setText("Grafo dirigido");
         else tglDirigido.setText("Grafo no dirigido");
-    }
-
-    private void cambioEstadoPonderado() {
-        if(tglPonderado.isSelected()) tglPonderado.setText("Grafo ponderado");
-        else tglPonderado.setText("Grafo no ponderado");
     }
 
     private void terminarPrograma() {
@@ -45,7 +37,7 @@ public class PrincipalController implements Initializable {
     private void abrirEspacioDeTrabajo() {
         FXMLLoader loader = Pantalla.cargarPantalla("/Vistas/mesaTrabajo.fxml");
         MesaTrabajoController mesaTrabajoController = loader.getController();
-        mesaTrabajoController.establecerConfiguracion(tglDirigido.isSelected(), tglPonderado.isSelected());
+        mesaTrabajoController.establecerConfiguracion(tglDirigido.isSelected());
     }
 
 }

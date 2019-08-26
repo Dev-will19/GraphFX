@@ -1,11 +1,8 @@
 package Entidades;
 
-import Controladores.MesaTrabajoController;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.Path;
 
 public class AristaGrafo extends Group {
 
@@ -20,11 +17,9 @@ public class AristaGrafo extends Group {
     }
 
     private void crearComponentes() {
-        //Componentes del grupo
         linea = new Line();
         linea.setStrokeWidth(5);
         linea.setStroke(Color.WHITE);
-        if (MesaTrabajoController.esDirigido) crearFlecha();
         posicionarElementos();
         getChildren().addAll(linea);
     }
@@ -52,9 +47,4 @@ public class AristaGrafo extends Group {
         linea.setEndY(verticeFinal.getPosY());
     }
 
-    private void crearFlecha() {
-        Arrow arrow = new Arrow(linea.getStartX(),linea.getStartY());
-        getChildren().add(arrow);
-        posicionarElementos();
-    }
 }
