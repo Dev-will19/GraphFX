@@ -351,16 +351,12 @@ public class MesaTrabajoController implements Initializable {
 
     private boolean existeArista(VerticeGrafo verticeFinal) {
         for (AristaGrafo aristaGrafo : listaAristas) {
-            if (aristaGrafo.getVerticeInicial().getIdentificador() == verticeInicial.getIdentificador() &&
-                    aristaGrafo.getVerticeFinal().getIdentificador() == verticeFinal.getIdentificador()) {
-                return true;
-            }
 
-            // Comprobación a la inversa para detectar cuando sea no dirigido
-            if (esDirigido && aristaGrafo.getVerticeInicial().getIdentificador() == verticeFinal.getIdentificador() &&
-                    aristaGrafo.getVerticeFinal().getIdentificador() == verticeInicial.getIdentificador()) {
+            if (verticeInicial == aristaGrafo.getVerticeInicial() && verticeFinal == aristaGrafo.getVerticeFinal())
                 return true;
-            }
+
+            if (!esDirigido && verticeInicial == aristaGrafo.getVerticeFinal() && verticeFinal == aristaGrafo.getVerticeInicial())
+                return true;
         }
         return false;
     }
