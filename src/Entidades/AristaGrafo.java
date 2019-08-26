@@ -1,8 +1,11 @@
 package Entidades;
 
+import com.sun.javafx.scene.control.skin.LabeledImpl;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+
+import static javafx.scene.Cursor.HAND;
 
 public class AristaGrafo extends Group {
 
@@ -18,6 +21,7 @@ public class AristaGrafo extends Group {
 
     private void crearComponentes() {
         linea = new Line();
+        linea.setCursor(HAND);
         linea.setStrokeWidth(5);
         linea.setStroke(Color.WHITE);
         posicionarElementos();
@@ -32,12 +36,16 @@ public class AristaGrafo extends Group {
         return verticeFinal;
     }
 
-    public void posicionarElementos() {
-        setPosicionLinea();
-        setPosicionFlecha();
+    public Line getLinea() {
+        return linea;
     }
 
-    private void setPosicionFlecha() {
+    public void setLinea(Line linea) {
+        this.linea = linea;
+    }
+
+    public void posicionarElementos() {
+        setPosicionLinea();
     }
 
     private void setPosicionLinea() {

@@ -3,7 +3,9 @@
     -color-principal: #478fb6;
     -color-hint: #3b8ba9;
     -fondo: #2b2b2b;
-    -gris: rgba(62, 62, 62, 0.65);
+    -gris: rgba(5, 5, 5, 0.78);
+    -verde: #3d682a;
+    -verde-hint: #8cd144;
     -negro: #000000;
     -blanco: #ffffff;
     -transparente: rgba(255, 255, 255, 0);
@@ -79,6 +81,20 @@
     -fx-background-radius: 0px;
 }
 
-.jfx-menu-no-bordes{
+.jfx-menu-no-bordes {
     -fx-background-radius: 0px;
+}
+
+.jfx-cambiar-arista {
+    -fx-background-color: -verde;
+    -fx-background-radius: 100%;
+    -jfx-button-type: RAISED;
+}
+
+.jfx-cambiar-arista:selected {
+    -fx-background-color: -verde-hint;
+}
+
+.jfx-texto-label {
+    -fx-background-color: -gris;
 }
