@@ -180,7 +180,7 @@ public class MesaTrabajoController implements Initializable {
             verticeInicial.getVerticesAdyacentes().add(verticeFinal.getIdentificador());
         } else {
             if (!existeArista(verticeFinal)) {
-                AristaGrafo aristaGrafo = new AristaGrafo(verticeInicial, verticeFinal);
+                AristaGrafo aristaGrafo = new AristaGrafo(verticeInicial, verticeFinal,esDirigido);
                 establecerComportamientoAristas(aristaGrafo);
                 listaAristas.add(aristaGrafo);
                 verticeInicial.getVerticesAdyacentes().add(verticeFinal.getIdentificador());
@@ -216,13 +216,8 @@ public class MesaTrabajoController implements Initializable {
                 verticeGrafo.setPosX(event.getX());
                 verticeGrafo.setPosY(event.getY());
                 verticeGrafo.posicionarElementos();
-                if (verticeGrafo.getVerticesAdyacentes().size() != 0) {       // Si posee aristas
-                    for (AristaGrafo aristaGrafo : listaAristas) {
-                        if (aristaGrafo.getVerticeInicial().getIdentificador() == verticeGrafo.getIdentificador() ||
-                                aristaGrafo.getVerticeFinal().getIdentificador() == verticeGrafo.getIdentificador()) {
-                            aristaGrafo.posicionarElementos();
-                        }
-                    }
+                for (AristaGrafo aristaGrafo : listaAristas) {
+                    aristaGrafo.posicionarElementos();
                 }
             } else {
                 if (!seMostroNotificacionArrastre) {

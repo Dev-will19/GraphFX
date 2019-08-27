@@ -10,9 +10,11 @@ public class AristaGrafo extends Group {
 
     private VerticeGrafo verticeInicial;
     private VerticeGrafo verticeFinal;
+    private boolean esDirigido;
     private Line linea;
 
-    public AristaGrafo(VerticeGrafo verticeInicial, VerticeGrafo verticeFinal) {
+    public AristaGrafo(VerticeGrafo verticeInicial, VerticeGrafo verticeFinal, boolean esDirigido) {
+        this.esDirigido = esDirigido;
         this.verticeInicial = verticeInicial;
         this.verticeFinal = verticeFinal;
         crearComponentes();
@@ -23,6 +25,10 @@ public class AristaGrafo extends Group {
         linea.setCursor(HAND);
         linea.setStrokeWidth(5);
         linea.setStroke(Color.WHITE);
+        if (esDirigido)  {
+            verticeFinal.getCirculo().setStroke(Color.WHITE);
+            verticeFinal.getCirculo().setStrokeWidth(5);
+        }
         posicionarElementos();
         getChildren().addAll(linea);
     }
