@@ -112,7 +112,7 @@
                             <String fx:value="jfx-button-normal" />
                         </styleClass>
                         <graphic>
-                            <FontAwesomeIcon fill="WHITE" iconName="ANGLE_DOUBLE_DOWN" size="25" />
+                            <FontAwesomeIcon fill="WHITE" iconName="CHEVRON_DOWN" size="25" />
                         </graphic>
                     </Label>
                     <Label fx:id="lblDirigido" alignment="CENTER" maxWidth="1.7976931348623157E308" minHeight="40.0" styleClass="jfx-texto-label" text="Grafo no dirigido">

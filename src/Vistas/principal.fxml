@@ -2,8 +2,13 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXToggleButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import java.lang.String?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -13,13 +18,25 @@
             prefWidth="920" stylesheets="@Styles.css" xmlns="http://javafx.com/javafx/11.0.1"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.PrincipalController">
     <center>
-        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" styleClass="parent"
+        <VBox alignment="CENTER" prefHeight="500.0" prefWidth="579.0" spacing="20.0" styleClass="parent"
               BorderPane.alignment="CENTER">
-            <Label text="Simulador de Grafos">
-                <font>
-                    <Font name="System Bold" size="26.0"/>
-                </font>
-            </Label>
+            <VBox alignment="CENTER">
+                <Label text="Simulador de Grafos">
+                    <font>
+                        <Font name="System Bold" size="26.0"/>
+                    </font>
+                </Label>
+                <Label text="Proyecto final - Estructuras de Datos">
+                    <font>
+                        <Font size="16.0"/>
+                    </font>
+                </Label>
+                <Label text="Universidad Técnica de Machala">
+                    <font>
+                        <Font name="System Italic" size="16.0"/>
+                    </font>
+                </Label>
+            </VBox>
             <Label text="configura tu espacio de trabajo:">
                 <font>
                     <Font size="16.0"/>
@@ -48,4 +65,74 @@
             </HBox>
         </VBox>
     </center>
+    <left>
+        <VBox alignment="CENTER" prefHeight="500.0" prefWidth="398.0" spacing="30.0" BorderPane.alignment="CENTER">
+            <ImageView fitHeight="137.0" fitWidth="279.0" pickOnBounds="true" preserveRatio="true">
+                <VBox.margin>
+                    <Insets bottom="20.0" top="20.0"/>
+                </VBox.margin>
+                <Image url="@logo-grafo.png"/>
+            </ImageView>
+            <VBox alignment="CENTER">
+                <Label styleClass="jfx-texto-gris" text="Desarrolladores:">
+                    <font>
+                        <Font name="System Bold" size="17.0"/>
+                    </font>
+                </Label>
+                <Label styleClass="jfx-texto-gris" text="Carreño Tejada Willy, Jarrín Unuzungo Jorge">
+                    <font>
+                        <Font size="17.0"/>
+                    </font>
+                </Label>
+                <Label styleClass="jfx-texto-gris" text="Izurieta Reyes, Guevara Villacrés Allan">
+                    <font>
+                        <Font size="17.0"/>
+                    </font>
+                </Label>
+                <Label layoutX="68.0" layoutY="62.0" styleClass="jfx-texto-gris" text="Padilla Neira Juan">
+                    <font>
+                        <Font size="17.0"/>
+                    </font>
+                </Label>
+            </VBox>
+            <HBox alignment="CENTER" spacing="20.0">
+                <JFXButton fx:id="btnContacto" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" layoutX="402.0"
+                           layoutY="10.0" minHeight="58.0" minWidth="58.0" styleClass="jfx-button-circular">
+                    <font>
+                        <Font size="17.0"/>
+                    </font>
+                    <tooltip>
+                        <Tooltip text="Contacto"/>
+                    </tooltip>
+                    <graphic>
+                        <FontAwesomeIcon fill="WHITE" iconName="ENVELOPE" size="25"/>
+                    </graphic>
+                </JFXButton>
+                <JFXButton fx:id="btnDocumentacion" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" minHeight="58.0"
+                           minWidth="58.0" styleClass="jfx-button-circular">
+                    <font>
+                        <Font size="17.0"/>
+                    </font>
+                    <graphic>
+                        <FontAwesomeIcon fill="WHITE" iconName="FILE_TEXT" size="25"/>
+                    </graphic>
+                    <tooltip>
+                        <Tooltip text="Documentación"/>
+                    </tooltip>
+                </JFXButton>
+                <JFXButton fx:id="btnGithub" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" minHeight="58.0"
+                           minWidth="58.0" styleClass="jfx-button-circular">
+                    <font>
+                        <Font size="17.0"/>
+                    </font>
+                    <graphic>
+                        <FontAwesomeIcon fill="WHITE" iconName="GITHUB" size="35"/>
+                    </graphic>
+                    <tooltip>
+                        <Tooltip text="Código fuente"/>
+                    </tooltip>
+                </JFXButton>
+            </HBox>
+        </VBox>
+    </left>
 </BorderPane>

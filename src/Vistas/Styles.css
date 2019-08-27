@@ -1,7 +1,7 @@
 * {
     /* Variables globales del tema */
     -color-principal: #478fb6;
-    -color-hint: #3b8ba9;
+    -color-hint: #0f7ca9;
     -fondo: #2b2b2b;
     -gris: rgba(5, 5, 5, 0.78);
     -verde: #46cf4c;
@@ -21,6 +21,10 @@
 
 .label {
     -fx-text-fill: -blanco;
+}
+
+.jfx-texto-gris {
+    -fx-text-fill: -gris;
 }
 
 .jfx-button-normal {
@@ -98,3 +102,4 @@
 .jfx-texto-label {
     -fx-background-color: -gris;
 }
+
