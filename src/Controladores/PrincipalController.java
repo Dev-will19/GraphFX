@@ -8,6 +8,7 @@ import com.sun.javafx.application.HostServicesDelegate;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -28,6 +29,7 @@ public class PrincipalController extends Application implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         tglDirigido.setText("Grafo no dirigido");
         tglDirigido.setOnAction(event -> cambioEstadoDirigido());
         btnEmpezar.setOnAction(event -> abrirEspacioDeTrabajo());
